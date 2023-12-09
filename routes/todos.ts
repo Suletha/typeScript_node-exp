@@ -2,6 +2,10 @@ import exp from 'constants';
 import { Router } from 'express';
 import { Todo } from '../models/todo';
 let todos: Todo[] =[];
+
+type requestBody = { text: string}
+type requestParam = { todoId: string}
+
 const router = Router();
 
 router.get('/', (req,res,next) =>{
@@ -9,7 +13,7 @@ router.get('/', (req,res,next) =>{
 });
 
 router.post('/todo',(req,res,next) => {
-    
+
     const newTodo: Todo ={
         id: new Date().toISOString(),
         text: req.body.text
@@ -19,6 +23,8 @@ router.post('/todo',(req,res,next) => {
 });
 router.put('./todo/:todoId', (req,res,next) => {
     const tid = req.params.todoId;
+    const params = req.params as requestParam;
+    const body = req.body as requestBody;
     const todoIndex = todos.findIndex((todoItem) => todoItem.id === tid);
 
     if(todoIndex >= 0){
